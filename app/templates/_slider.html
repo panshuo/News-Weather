@@ -1,0 +1,42 @@
+{#<div class="slider">#}
+{#    <ul class="slides">#}
+{#        {% for slides in slider %}#}
+{#        <li>#}
+{#            <a href="{{ slides.link }}">#}
+{#                {% if slides.static_media_thumbnail %}#}
+{#                <img src="{{ '/images/' + slides.static_media_thumbnail }}">#}
+{#              {% else %}#}
+{#                <img src="{{ slides.media_thumbnail }}">#}
+{#              {% endif %}#}
+{#                <div class="caption center-align">#}
+{#                    <h4>{{ slides.title }}</h4>#}
+{#                </div>#}
+{#            </a>#}
+{#        </li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#</div>#}
+
+{#<div class="main">#}
+{#  <div id="immersive_slider">#}
+{#    {% for slides in slider %}#}
+{#      {% if slides.static_media_thumbnail %}#}
+{#        <div class="slide" data-blurred="{{ '/images/' + slides.static_media_thumbnail }}"></div>#}
+{#      {% else %}#}
+{#        <div class="slide" data-blurred="{{ slides.media_thumbnail }}"></div>#}
+{#      {% endif %}#}
+{#    {% endfor %}#}
+{#  </div>#}
+{#</div>#}
+
+<div class="col-xs-12" id="slider-container">
+  <ul class="bxslider">
+    {% for slides in slider %}
+      {% if slides.static_media_thumbnail %}
+        <li><img src="{{ '/images/' + slides.static_media_thumbnail }}" title="{{ slides.title }}"/></li>
+      {% else %}
+        <li><img src="{{ slides.media_thumbnail }}"  title="{{ slides.title }}"/></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</div>

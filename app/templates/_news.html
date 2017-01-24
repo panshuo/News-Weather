@@ -1,0 +1,36 @@
+{% for article in articles %}
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 news">
+    {% if article.news_agency == 'BBC' %}
+      <div class="panel panel-red-lighten-2">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{ article.title }}</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-12">
+              {% if article.static_media_thumbnail %}
+                <a href="{{ article.link }}"><img src="{{ '/images/' + article.static_media_thumbnail }}" alt="article.news_agency" class="img-thumbnail"></a>
+              {% else %}
+                <a href="{{ article.link }}"><img src="{{ article.media_thumbnail }}" alt="article.news_agency" class="img-thumbnail"></a>
+              {% endif %}
+            </div>
+            <div class="col-xs-12">
+              <h5>{{ article.summary }}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <span class="news-published">{{ article.published }}</span> 发布，点击图片查看更多内容@{{ article.news_agency }}
+          <p>
+          <span class="push-button-container"><button class="btn btn-info btn-xs info button-push" id="button-push-{{ article.id }}">推送到轮播</button></span>
+            {% if current_user.is_authenticated and current_user.is_starring(article) %}
+            <span class="favourite-button-container"><button class="btn btn-danger btn-xs danger button-cancel-favourite" id="button-favourites-{{ article.id }}">取消收藏</button></span>
+              {% else %}
+              <span class="favourite-button-container"><button class="btn btn-info btn-xs info button-favourite" id="button-favourites-{{ article.id }}">收藏新闻</button></span>
+            {% endif %}
+        </p>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endfor %}

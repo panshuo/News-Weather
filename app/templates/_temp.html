@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+
+    .navbar-indigo{background-color:#c5cae9;border-color:#e7e7e7}
+    .navbar-indigo .navbar-brand{color:#333333}
+    .navbar-indigo .navbar-brand:hover,
+    .navbar-indigo .navbar-brand:focus{color:#333333;background-color:transparent}
+    .navbar-indigo .navbar-text{color:#555555}
+    .navbar-indigo .navbar-nav>li>a{color:#999999}
+    .navbar-indigo .navbar-nav>li>a:hover,
+    .navbar-indigo .navbar-nav>li>a:focus{color:#333333;background-color:transparent}
+    .navbar-indigo .navbar-nav>.active>a,
+    .navbar-indigo .navbar-nav>.active>a:hover,
+    .navbar-indigo .navbar-nav>.active>a:focus{color:#333333;background-color:transparent}
+    .navbar-indigo .navbar-nav>.disabled>a,
+    .navbar-indigo .navbar-nav>.disabled>a:hover,
+    .navbar-indigo .navbar-nav>.disabled>a:focus{color:#eeeeee;background-color:transparent}
+    .navbar-indigo .navbar-toggle{border-color:#eeeeee}
+    .navbar-indigo .navbar-toggle:hover,
+    .navbar-indigo .navbar-toggle:focus{background-color:#ffffff}
+    .navbar-indigo .navbar-toggle .icon-bar{background-color:#999999}
+    .navbar-indigo .navbar-collapse,
+    .navbar-indigo .navbar-form{border-color:#e7e7e7}
+    .navbar-indigo .navbar-nav>.open>a,
+    .navbar-indigo .navbar-nav>.open>a:hover,
+    .navbar-indigo .navbar-nav>.open>a:focus{background-color:transparent;color:#333333}@media (max-width:767px){
+      .navbar-indigo .navbar-nav .open .dropdown-menu>li>a{color:#999999}
+      .navbar-indigo .navbar-nav .open .dropdown-menu>li>a:hover,
+      .navbar-indigo .navbar-nav .open .dropdown-menu>li>a:focus{color:#333333;background-color:transparent}
+      .navbar-indigo .navbar-nav .open .dropdown-menu>.active>a,
+      .navbar-indigo .navbar-nav .open .dropdown-menu>.active>a:hover,
+      .navbar-indigo .navbar-nav .open .dropdown-menu>.active>a:focus{color:#333333;background-color:transparent}
+      .navbar-indigo .navbar-nav .open .dropdown-menu>.disabled>a,
+      .navbar-indigo .navbar-nav .open .dropdown-menu>.disabled>a:hover,
+      .navbar-indigo .navbar-nav .open .dropdown-menu>.disabled>a:focus{color:#eeeeee;background-color:transparent}}
+    .navbar-indigo .navbar-link{color:#999999}
+    .navbar-indigo .navbar-link:hover{color:#333333}
+    .navbar-indigo .btn-link{color:#999999}
+    .navbar-indigo .btn-link:hover,
+    .navbar-indigo .btn-link:focus{color:#333333}
+    .navbar-indigo .btn-link[disabled]:hover,fieldset[disabled]
+    .navbar-indigo .btn-link:hover,
+    .navbar-indigo .btn-link[disabled]:focus,fieldset[disabled]
+    .navbar-indigo .btn-link:focus{color:#eeeeee}
+  </style>
+</head>
+<body>
+<script>
+  <script>
+  moment.locale('zh_cn')
+  var $container = $('.masonry-container');
+  $container.imagesLoaded(function () {
+    $container.masonry({
+      columnWidth: '.news',
+      itemSelector: '.news'
+    });
+  });
+  function refreshHWStatus() {
+    $.ajax({
+      url: '/api/v1/hw_status',
+      type: 'GET',
+      dataType: 'json',
+      timeout: 5000,
+      success: function (data) {
+        if (data.r == 0) {
+          $('#hw-status-CPU-temp').text(data.hw_status['CPU_temp']);
+          $('#hw-status-RAM-used').text(data.hw_status['RAM_used']);
+          $('#hw-status-RAM-free').text(data.hw_status['RAM_free']);
+          $('#hw-status-disk-used').text(data.hw_status['disk_used']);
+          $('#hw-status-disk-perc').text(data.hw_status['disk_perc']);
+          $('#hw-status-disk-total').text(data.hw_status['disk_total']);
+        } else if (data.r == 1) {
+          console.log("fail to refresh HW status")
+        }
+      },
+      error: function () {
+        console.log("与服务器通信出现问题，初始化失败，请尝试刷新页面");
+      }
+    });
+  }
+  function newPublished() {
+    var all = $('.news-published');
+    i = all.length;
+    while (i--) {
+      all[i].innerHTML = moment(all[i].innerHTML).fromNow();
+    }
+  }
+  function weatherRefreshTime() {
+    var weatherRefreshTime = $('#weather-refresh-time');
+    weatherRefreshTime.text(moment(weatherRefreshTime.text()).fromNow());
+  }
+  $(document).ready(function() {
+    // 初始化左侧顶部轮播组件
+    $('.bxslider').bxSlider({
+      captions: true
+    });
+    weatherRefreshTime();
+    newPublished();
+    // 点击 "收藏这条新闻" 按钮时触发
+    function addFavourite() {
+      newsID = this.id.substring(18);
+      $.ajax({
+        url: '/api/v1/favourites',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ newsID: newsID }),
+        type: 'POST',
+        dataType: 'json',
+        timeout: 5000,
+        success: function (data) {
+          $('#message-container').append('<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>成功添加到收藏</div>');
+          $('#button-favourites-' + newsID).removeClass('btn btn-info btn-xs info button-favourite').addClass('btn btn-danger btn-xs danger button-cancel-favourite').html('取消收藏');
+        }
+      });
+    }
+    $('.button-favourite').click(addFavourite);
+    // 点击 "取消收藏" 按钮时触发
+    function cancelFavourite() {
+      newsID = this.id.substring(18);
+      $.ajax({
+        url: '/api/v1/favourites',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({ newsID: newsID }),
+        type: 'DELETE',
+        dataType: 'json',
+        timeout: 5000,
+        success: function (data) {
+          $('#message-container').append('<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>成功取消收藏</div>');
+          $('#button-favourites-' + newsID).removeClass('btn btn-danger btn-xs danger button-cancel-favourite').addClass('btn btn-info btn-xs info button-favourite').html('收藏这条新闻');
+        }
+      });
+    }
+    $('.button-cancel-favourite').click(cancelFavourite);
+    // 每隔5秒刷新一次树莓派硬件状态
+    {#      setInterval("refreshHWStatus()", 5000);#}
+  })
+</script>
+</script>
+</body>
+</html>

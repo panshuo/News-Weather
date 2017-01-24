@@ -1,0 +1,168 @@
+{% block doc -%}
+  <!DOCTYPE html>
+  {% block html_attribs %}{% endblock html_attribs %}
+  <html>
+  {%- block html %}
+    <head>
+      {%- block head %}
+        <title>
+          {% block title %}
+          {% endblock title %}
+        </title>
+
+        {%- block metas %}
+          <meta property="wb:webmaster" content="157ffd4eda10a0fd" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8"/>
+        {%- endblock metas %}
+
+        {%- block styles %}
+          <link href="/static/bootstrap.min.css" rel="stylesheet">
+          <link href="/static/jquery.bxslider.css" rel="stylesheet">
+          <link href="/static/messenger.css" rel="stylesheet">
+          <link href="/static/messenger-theme-flat.css" rel="stylesheet">
+          <style>
+            {#          #5c6bc0 indigo lighten-2#}
+            {#          #66bb6a green lighten-2#}
+            {#          #bdbdbd grey lighten-2#}
+            {#          #78909c blue-grey lighten-2#}
+
+            .navbar-indigo{background-color:#ffffff;border-color:#dfdfdf}
+            .navbar-indigo .navbar-brand{color:#e91e63}
+            .navbar-indigo .navbar-brand:hover,
+            .navbar-indigo .navbar-brand:focus{color:#333333;background-color:transparent}
+            .navbar-indigo .navbar-text{color:#555555}
+            .navbar-indigo .navbar-nav>li>a{color:#616161}
+            .navbar-indigo .navbar-nav>li>a:hover,
+            .navbar-indigo .navbar-nav>li>a:focus{color:#333333;background-color:transparent}
+            .navbar-indigo .navbar-nav>.active>a,
+            .navbar-indigo .navbar-nav>.active>a:hover,
+            .navbar-indigo .navbar-nav>.active>a:focus{color:#333333;background-color:transparent}
+            .navbar-indigo .navbar-nav>.disabled>a,
+            .navbar-indigo .navbar-nav>.disabled>a:hover,
+            .navbar-indigo .navbar-nav>.disabled>a:focus{color:#eeeeee;background-color:transparent}
+            .navbar-indigo .navbar-toggle{border-color:#eeeeee}
+            .navbar-indigo .navbar-toggle:hover,
+            .navbar-indigo .navbar-toggle:focus{background-color:#ffffff}
+            .navbar-indigo .navbar-toggle .icon-bar{background-color:#999999}
+            .navbar-indigo .navbar-collapse,
+            .navbar-indigo .navbar-form{border-color:#e7e7e7}
+            .navbar-indigo .navbar-nav>.open>a,
+            .navbar-indigo .navbar-nav>.open>a:hover,
+            .navbar-indigo .navbar-nav>.open>a:focus{background-color:transparent;color:#333333}@media (max-width:767px){
+              .navbar-indigo .navbar-nav .open .dropdown-menu>li>a{color:#999999}
+              .navbar-indigo .navbar-nav .open .dropdown-menu>li>a:hover,
+              .navbar-indigo .navbar-nav .open .dropdown-menu>li>a:focus{color:#333333;background-color:transparent}
+              .navbar-indigo .navbar-nav .open .dropdown-menu>.active>a,
+              .navbar-indigo .navbar-nav .open .dropdown-menu>.active>a:hover,
+              .navbar-indigo .navbar-nav .open .dropdown-menu>.active>a:focus{color:#333333;background-color:transparent}
+              .navbar-indigo .navbar-nav .open .dropdown-menu>.disabled>a,
+              .navbar-indigo .navbar-nav .open .dropdown-menu>.disabled>a:hover,
+              .navbar-indigo .navbar-nav .open .dropdown-menu>.disabled>a:focus{color:#eeeeee;background-color:transparent}}
+            .navbar-indigo .navbar-link{color:#999999}
+            .navbar-indigo .navbar-link:hover{color:#333333}
+            .navbar-indigo .btn-link{color:#999999}
+            .navbar-indigo .btn-link:hover,
+            .navbar-indigo .btn-link:focus{color:#333333}
+            .navbar-indigo .btn-link[disabled]:hover,fieldset[disabled]
+            .navbar-indigo .btn-link:hover,
+            .navbar-indigo .btn-link[disabled]:focus,fieldset[disabled]
+            .navbar-indigo .btn-link:focus{color:#eeeeee}
+
+            .panel-red-lighten-2{border-color:#ffcdd2}
+            .panel-red-lighten-2>.panel-heading{color:#ffffff;background-color:#e57373;border-color:#ffffff}
+            .panel-red-lighten-2>.panel-heading+.panel-collapse>.panel-body{border-top-color:#ffffff}
+            .panel-red-lighten-2>.panel-heading .badge{color:#e57373;background-color:#ffffff}
+            .panel-red-lighten-2>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:#ffffff}
+
+            .panel-teal-lighten-2{border-color:#b2dfdb}
+            .panel-teal-lighten-2>.panel-heading{color:#ffffff;background-color:#4db6ac;border-color:transparent}
+            .panel-teal-lighten-2>.panel-heading+.panel-collapse>.panel-body{border-top-color:#ffffff}
+            .panel-teal-lighten-2>.panel-heading .badge{color:#4db6ac;background-color:#ffffff}
+            .panel-teal-lighten-2>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:transparent}
+
+            .panel-pink-lighten-2{border-color:#f8bbd0}
+            .panel-pink-lighten-2>.panel-heading{color:#ffffff;background-color:#f06292;border-color:transparent}
+            .panel-pink-lighten-2>.panel-heading+.panel-collapse>.panel-body{border-top-color:#ffffff}
+            .panel-pink-lighten-2>.panel-heading .badge{color:#f06292;background-color:#ffffff}
+            .panel-pink-lighten-2>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:transparent}
+
+            .panel-cyan-lighten-2{border-color:#b2ebf2}
+            .panel-cyan-lighten-2>.panel-heading{color:#ffffff;background-color:#26c6da;border-color:transparent}
+            .panel-cyan-lighten-2>.panel-heading+.panel-collapse>.panel-body{border-top-color:#ffffff}
+            .panel-cyan-lighten-2>.panel-heading .badge{color:#26c6da;background-color:#ffffff}
+            .panel-cyan-lighten-2>.panel-footer+.panel-collapse>.panel-body{border-bottom-color:transparent}
+
+            .center-block {
+              display: table;
+              width: auto;
+              margin-left: auto;
+              margin-right: auto
+            }
+          </style>
+        {%- endblock styles %}
+
+
+      {%- endblock head %}
+    </head>
+
+    <body>
+    {% block body_attribs %}{% endblock body_attribs %}
+    {% block body -%}
+
+      <header>
+        {% block navbar %}
+          <nav class="navbar navbar-indigo" role="navigation" id="navbar-container">
+            <div class="container-fluid">
+              <!-- Brand and toggle get grouped for better mobile display -->
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for("main.index") }}">News&Weather</a>
+              </div>
+              <!-- Collect the nav links, forms, and other content for toggling -->
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                  {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('auth.user', user_id=current_user.id) }}">{{ current_user.username or current_user.oauth.weibo_user_id }}的个人中心</a> </li>
+                    <li><a href="{{ url_for('auth.signout') }}">注销</a></li>
+                  {% else %}
+                    <li><a href="{{ url_for("auth.weibo") }}">微博登录</a></li>
+                    <li><a href="{{ url_for("auth.signin") }}">登录</a></li>
+                    <li><a href="{{ url_for("auth.signup") }}">注册</a></li>
+                  {% endif %}
+                </ul>
+              </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+          </nav>
+        {%- endblock navbar %}
+      </header>
+
+      <main>
+        {% block content -%}
+        {% endblock content %}
+      </main>
+
+      {% block footer %}
+        <div class="page-footer"></div>
+      {% endblock footer %}
+
+      {%- block scripts %}
+        <script src="/static/jquery.min.js"></script>
+        <script src="/static/bootstrap.min.js"></script>
+        <script src="/static/jquery-scrolltofixed-min.js"></script>
+        <script src="/static/messenger.min.js"></script>
+        <script src="/static/messenger-theme-flat.js"></script>
+        <script src="/static/jquery.bxslider.js"></script>
+        <script src="/static/moment.js"></script>
+        <script src="/static/masonry.pkgd.min.js"></script>
+        <script src="/static/imagesloaded.min.js"></script>
+      {%- endblock scripts %}
+    {%- endblock body %}
+    </body>
+  {%- endblock html %}
+  </html>
+{%- endblock doc -%}

@@ -1,0 +1,15 @@
+<div class="panel panel-teal-lighten-2" id="weather-container">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{ weather.city }} 现在的天气</h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      <li class="list-group-item"><b>今日天气：</b>{{ weather.description }}</li>
+      <li class="list-group-item"><b>目前温度：</b>{{ weather.temperature }}摄氏度</li>
+      <li class="list-group-item"><b>相对湿度：</b>{{ weather.humidity }}</li>
+      <li class="list-group-item"><b>日出时间：</b>{{ weather.sunrise }}</li>
+      <li class="list-group-item"><b>日落时间：</b>{{ weather.sunset }}</li>
+      <li class="list-group-item"><b>更新时间：</b><span class="weather-refresh-time">{{ weather.refresh_time }}</span></li>
+    </ul>
+  </div>
+</div>

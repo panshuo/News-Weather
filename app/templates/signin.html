@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}登入{% endblock %}
+{% block content -%}
+  {{ super() }}
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+        <div class="panel panel-cyan-lighten-2">
+          <div class="panel-heading">
+            <h3 class="panel-title">登入</h3>
+          </div>
+          <div class="panel-body">
+            <form role="form" method="post">
+              {{ form.csrf_token }}
+              <div class="form-group">
+                <label for="email">电子邮箱:</label>
+                {{ form.email(class="form-control", placeholder="在这里输入邮箱地址") }}
+              </div>
+              <div class="form-group">
+                <label for="password">密码:</label>
+                {{ form.password(class="form-control", placeholder="在这里输入密码") }}
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> 记住登入状态
+                </label>
+              </div>
+              <button type="submit" class="btn btn-primary">登入</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

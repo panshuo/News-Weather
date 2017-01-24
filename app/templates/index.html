@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% import "_macros.html" as macros %}
+
+{% block title %}News&Weather{% endblock title %}
+
+{% block content -%}
+  <div class="container-fluid">
+    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
+      <!-- 主页面的容器 -->
+      <div class="row">
+        <!-- 左侧轮播组件，分页和天气面板的容器 -->
+        <div class="col-xs-12 col-sm-4 pinned">
+          <!-- Flash 消息的容器 -->
+          <div class="row"><div class="col-xs-8 col-xs-offset-2" id="flash_messages"><p></p></div></div>
+          <div class="row">{% include "_slider.html" %}</div>
+          <div class="row">{{ macros.pagination_widget(pagination, '.index') }}</div>
+          <div class="row hidden-xs">{% include "_weather.html" %}</div>
+          <div class="row hidden-xs">{% include "_hw_monitor.html" %}</div>
+        </div>
+        <!-- 右侧新闻的 container -->
+        <div class="col-xs-12 col-sm-8" style="margin-top: 10px" id="news-container">
+          <div class="row masonry-container">
+            <div class="col-xs-12">
+              {% include "_news.html" %}
+            </div>
+          </div>
+          <div class="row visible-xs">{% include "_weather.html" %}</div>
+          <div class="row visible-xs">{% include "_hw_monitor.html" %}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endblock content %}
+
+{%- block scripts %}
+  {{ super() }}
+  <script>
+    $("#navbar-container").attr("z-index",999);
+    // 初始化 Messenger 消息弹窗插件
+    Messenger.options = {
+      {#      parentLocations: ['#flash_messages'],#}
+      'maxMessages': 4,
+      extraClasses: 'messenger-fixed messenger-on-top messenger-on-right',
+      theme: 'flat'
+    };
+    // 初始化左侧顶部轮播组件
+    $('.bxslider').bxSlider({
+      captions: true,
+      controls: false
+    });
+    // 设置 moment 默认语言为中文
+    moment.locale('zh_cn');
+    // 瀑布流插件配置
+    var $container = $('.masonry-container');
+    $container.imagesLoaded(function () {
+      $container.masonry({
+        columnWidth: '.news',
+        itemSelector: '.news'
+      });
+    });
+    function refreshHWStatus() {
+      $.ajax({
+        url: '/api/v1/hw_status',
+        type: 'GET',
+        dataType: 'json',
+        timeout: 5000,
+        success: function (data) {
+          $('#hw-status-CPU-temp').text(data.hw_status['CPU_temp']);
+          $('#hw-status-RAM-used').text(data.hw_status['RAM_used']);
+          $('#hw-status-RAM-free').text(data.hw_status['RAM_free']);
+          $('#hw-status-disk-used').text(data.hw_status['disk_used']);
+          $('#hw-status-disk-perc').text(data.hw_status['disk_perc']);
+          $('#hw-status-disk-total').text(data.hw_status['disk_total']);
+        },
+        error: function (jqXHR) {
+          Messenger().post({
+            id: 'failed-to-contact-server',
+            type: 'error',
+            message: "获取树莓派硬件状态失败，请尝试刷新页面",
+            showCloseButton: true
+          });
+        }
+      });
+    }
+    // 页面加载完成后开始执行
+    $(document).ready(function() {
+      // 调用 moment.js 插件
+      $('.news-published').each(function(i){ this.innerHTML = moment(this.innerHTML).fromNow() });
+      $('.weather-refresh-time').each(function(i){ this.innerHTML = moment(this.innerHTML).fromNow() });
+      // 为收藏按钮绑定事件处理函数
+      $('.favourite-button-container').on('click', 'button', function () {
+        if ($(this).hasClass('button-favourite')) {
+          newsID = this.id.substring(18);
+          // 点击 "收藏新闻" 按钮时触发
+          $.ajax({
+            url: '/api/v1/favourites',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({newsID: newsID}),
+            type: 'POST',
+            dataType: 'json',
+            timeout: 5000,
+            success: function (data) {
+              Messenger().post({
+                id: 'successfully-added-to-favourites',
+                type: 'success',
+                message: data['message']
+              });
+              $('#button-favourites-' + newsID).removeClass('btn btn-info btn-xs info button-favourite').addClass('btn btn-danger btn-xs danger button-cancel-favourite').html('取消收藏');
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              if (jqXHR.status == 403) {
+                Messenger().post({
+                  id: 'not-logged-in',
+                  type: 'error',
+                  message: jqXHR.responseJSON['message']
+                });
+              } else if (jqXHR.status == 400) {
+                Messenger().post({
+                  id: 'news-id-does-not-exist',
+                  type: 'error',
+                  message: jqXHR.responseJSON['message']
+                });
+              }
+            }
+          });
+        } else if ($(this).hasClass('button-cancel-favourite')) {
+          newsID = this.id.substring(18);
+          // 点击 "取消收藏" 按钮时触发
+          $.ajax({
+            url: '/api/v1/favourites',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({newsID: newsID}),
+            type: 'DELETE',
+            dataType: 'json',
+            timeout: 5000,
+            success: function (data) {
+              Messenger().post({
+                id: 'successfully-canceled-from-favourites',
+                type: 'success',
+                message: data['message']
+              });
+              $('#button-favourites-' + newsID).removeClass('btn btn-danger btn-xs danger button-cancel-favourite').addClass('btn btn-info btn-xs info button-favourite').html('收藏新闻');
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              if (jqXHR.status == 403) {
+                Messenger().post({
+                  id: 'not-logged-in',
+                  type: 'error',
+                  message: jqXHR.responseJSON['message']
+                });
+              } else if (jqXHR.status == 400) {
+                Messenger().post({
+                  id: 'news-id-does-not-exist',
+                  type: 'error',
+                  message: jqXHR.responseJSON['message']
+                });
+              }
+            }
+          });
+        }
+      });
+      // 固定一些页面元素
+      var $navbarContainer = $('#navbar-container');
+      var $weatherContainer = $('#weather-container');
+      var $monitorContainer = $('#monitor-container');
+      $navbarContainer.scrollToFixed();
+      $weatherContainer.scrollToFixed({
+        marginTop: $navbarContainer.outerHeight() + 10
+      });
+      $monitorContainer.scrollToFixed({
+        marginTop: $navbarContainer.outerHeight() + 10 + 10 + $weatherContainer.outerHeight()
+      });
+      // 每隔5秒刷新一次树莓派硬件状态
+      setInterval("refreshHWStatus()", 5000);
+    })
+  </script>
+{%- endblock scripts %}

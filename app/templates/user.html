@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}{{ user.nickname or user.username or ('wb_' + user.oauth.weibo_user_id) }}'s Profile{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col s12">
+        {% if user.avatar %}
+          <div class="col s12 m6">
+            <img class="responsive-img" src="/static/avatar/{{ user.avatar }}">
+          </div>
+        {% endif %}
+        <div class="col s12 m6" style="text-align: center">
+          <h3>{{ user.nickname or user.username or ('wb_' + user.oauth.weibo_user_id) }}</h3>
+          {% if user.name or user.location %}
+            <p>
+              {% if user.name %}{{ user.name }}{% endif %}
+              {% if user.location %}
+                From <a href="http://maps.google.com/?q={{ user.location }}">{{ user.location }}</a>
+              {% endif %}
+            </p>
+          {% endif %}
+          {% if current_user.is_administrator() %}
+            <p><a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+          {% endif %}
+          {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+          <p>
+            {% if user == current_user %}
+              <a class="btn btn-default" href="{{ url_for('.edit_profile') }}">编辑个人资料</a>
+            {% endif %}
+            {% if current_user.is_administrator() %}
+              <a class="btn btn-danger" href="{{ url_for('.edit_profile_admin', id=user.id) }}">编辑用户信息 (管理员)</a>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+    </div>
+  </div>
+{% endblock content %}
+
+{% block scripts %}
+  {{  super() }}
+  <script>
+    {% include '_flashed_messages.html' %}
+    $(".button-collapse").sideNav();
+    $(document).ready(function() {
+      $('.slider').slider({full_width: true});
+      $('.collection-header').addClass('animated slideInDown');
+      $('.collection-item').addClass('animated slideInUp');
+      {#      $('ul.tabs').tabs();#}
+      $('ul.tabs').tabs('select_tab', 'tab_id');
+    });
+  </script>
+{% endblock scripts %}

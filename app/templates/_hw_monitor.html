@@ -1,0 +1,15 @@
+<div class="panel panel-teal-lighten-2" id="monitor-container">
+  <div class="panel-heading">
+    <h3 class="panel-title">树莓派硬件状态监视器</h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      <li class="list-group-item"><b>CPU 温度：</b><span id="hw-status-CPU-temp">{{ hw.CPU_temp }}</span></li>
+      <li class="list-group-item"><b>已使用内存：</b><span id="hw-status-RAM-used">{{ hw.RAM_used }}</span></li>
+      <li class="list-group-item"><b>剩余内存：</b><span id="hw-status-RAM-free">{{ hw.RAM_free }}</span></li>
+      <li class="list-group-item"><b>总硬盘空间：</b><span id="hw-status-disk-total">{{ hw.disk_total }}</span></li>
+      <li class="list-group-item"><b>已使用硬盘空间：</b><span id="hw-status-disk-used">{{ hw.disk_used }}</span></li>
+      <li class="list-group-item"><b>已使用硬盘百分比：</b><span id="hw-status-disk-perc">{{ hw.disk_perc }}</span></li>
+    </ul>
+  </div>
+</div>
